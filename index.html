@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crowdsourced Municipality</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>  Badlo kal</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Report</a>
+      <a href="#">Issues</a>
+      <a href="#">Login</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="report">
+      <h2>Report an Issue</h2>
+      <form id="issueForm">
+        <input type="text" placeholder="Issue Title" required />
+        <textarea placeholder="Describe the issue..." required></textarea>
+        <select>
+          <option disabled selected>Select Category</option>
+          <option>Pothole</option>
+          <option>Streetlight</option>
+          <option>Garbage</option>
+          <option>Other</option>
+        </select>
+        <input type="text" placeholder="Location" required />
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section id="issues">
+      <h2>Recent Issues</h2>
+      <div class="issue-list" id="issueList">
+        <!-- Issues will appear here -->
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 MyCity Connect. All rights reserved.</p>
+  </footer>
+
+  <script src=""></script>
+</body>
+</html>
