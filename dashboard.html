@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .page {
+            padding: 30px;
+            transition: transform 0.3s ease;
+        }
+        
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #5a67d8;
+        }
+        
+        .error {
+            color: #e53e3e;
+            font-size: 14px;
+            margin-top: 5px;
+            min-height: 20px;
+        }
+        
+        .success {
+            color: #38a169;
+            font-size: 14px;
+            margin-top: 5px;
+            min-height: 20px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .dashboard-content {
+            text-align: center;
+        }
+        
+        .dashboard-content h2 {
+            color: #667eea;
+            margin-bottom: 30px;
+        }
+        
+        .user-info {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .logout-btn {
+            background: #e53e3e;
+        }
+        
+        .logout-btn:hover {
+            background: #c53030;
+        }
+        
+        .welcome-text {
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #4a5568;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Page -->
+        <div id="login-page" class="page">
+            <h2>Login to Your Account</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter your username" required>
+                    <div id="username-error" class="error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                    <div id="password-error" class="error"></div>
+                </div>
+                <button type="submit">Login</button>
+                <div id="login-error" class="error"></div>
+                <div id="login-success" class="success"></div>
+            </form>
+        </div>
+        
+        <!-- Dashboard Page (initially hidden) -->
+        <div id="dashboard-page" class="page hidden">
+            <div class="dashboard-content">
+                <h2>Welcome to Your Dashboard</h2>
+                <div class="welcome-text">You have successfully logged in!</div>
+                <div class="user-info">
+                    <p>Username: <span id="display-username"></span></p>
+                    <p>Login Time: <span id="login-time"></span></p>
+                </div>
+                <button id="logout-btn" class="logout-btn">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get DOM elements
+            const loginPage = document.getElementById('login-page');
+            const dashboardPage = document.getElementById('dashboard-page');
+            const loginForm = document.getElementById('login-form');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const usernameError = document.getElementById('username-error');
+            const passwordError = document.getElementById('password-error');
+            const loginError = document.getElementById('login-error');
+            const loginSuccess = document.getElementById('login-success');
+            const displayUsername = document.getElementById('display-username');
+            const loginTime = document.getElementById('login-time');
+            const logoutBtn = document.getElementById('logout-btn');
+            
+            // Valid user credentials (for demonstration)
+            const validUsername = "user123";
+            const validPassword = "pass123";
+            
+            // Handle login form submission
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Reset errors
+                usernameError.textContent = '';
+                passwordError.textContent = '';
+                loginError.textContent = '';
+                loginSuccess.textContent = '';
+                
+                // Get input values
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value;
+                
+                // Validate inputs
+                let isValid = true;
+                
+                if (!username) {
+                    usernameError.textContent = 'Username is required';
+                    isValid = false;
+                }
+                
+                if (!password) {
+                    passwordError.textContent = 'Password is required';
+                    isValid = false;
+                }
+                
+                if (!isValid) return;
+                
+                // Check credentials
+                if (username === validUsername && password === validPassword) {
+                    // Successful login
+                    loginSuccess.textContent = 'Login successful! Redirecting...';
+                    
+                    // Store login state in localStorage
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('username', username);
+                    localStorage.setItem('loginTime', new Date().toLocaleString());
+                    
+                    // Redirect to dashboard after a brief delay
+                    setTimeout(showDashboard, 1500);
+                } else {
+                    // Failed login
+                    loginError.textContent = 'Invalid username or password';
+                }
+            });
+            
+            // Show dashboard function
+            function showDashboard() {
+                loginPage.classList.add('hidden');
+                dashboardPage.classList.remove('hidden');
+                
+                // Display user info
+                displayUsername.textContent = localStorage.getItem('username');
+                loginTime.textContent = localStorage.getItem('loginTime');
+            }
+            
+            // Handle logout
+            logoutBtn.addEventListener('click', function() {
+                // Clear login state
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('username');
+                localStorage.removeItem('loginTime');
+                
+                // Show login page
+                dashboardPage.classList.add('hidden');
+                loginPage.classList.remove('hidden');
+                
+                // Clear form
+                loginForm.reset();
+            });
+            
+            // Check if user is already logged in
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                showDashboard();
+            }
+        });
+    </script>
+</body>
+</html>
